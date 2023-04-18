@@ -1,3 +1,4 @@
+import asyncio
 import pygame, math, random, pickle
 
 MUSHROOM_WIDTH = 20
@@ -48,7 +49,7 @@ class Game:
         self.up_pressed_this_frame = False
         self.down_pressed_this_frame = False
 
-        self.start_game()
+        asyncio.run(self.start_game())
 
     def load_saved_object_state(self):
         self.game_stopping_animation = None
@@ -91,7 +92,7 @@ class Game:
         self.camera.teleport_to((-self.width/2, -self.height/2))
         self.load_saved_object_state()
 
-    def start_game(self):
+    async def start_game(self):
         running = True
         while running:
             self.mouse_clicked_this_frame = [False, False, False]
@@ -137,6 +138,7 @@ class Game:
             self.do_game_logic()
 
             self.do_game_drawing()
+            await asyncio.sleep(0)
 
             self.frame_time = self.clock.tick(self.framerate)
     def do_game_logic(self):
